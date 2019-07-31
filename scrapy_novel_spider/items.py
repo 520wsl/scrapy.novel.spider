@@ -5,10 +5,22 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy.item import Item, Field
 
 
-class ScrapyNovelSpiderItem(scrapy.Item):
+class ScrapyNovelSpiderItem(Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+
+
+class QidianItem(Item):
+    book_id = Field()
+    src = Field()
+    title = Field()
+    img_url = Field()
+    state = Field()
+    author = Field()
+    chan_name = Field()
+    sub_name = Field()
+    synoptic = Field()
