@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 from urllib.parse import urljoin,unquote
 from scrapy.linkextractors import LinkExtractor
-from scrapy.spiders import CrawlSpider, Rule
+from scrapy.spiders import Rule
 import scrapy
 
 from scrapy_novel_spider.items import QidianItem
+from scrapy_redis.spiders import RedisCrawlSpider
 
 
-class QidianSpider(CrawlSpider):
+class QidianSpider(RedisCrawlSpider):
     name = 'qidian'
     allowed_domains = ['qidian.com']
-    start_urls = ['https://www.qidian.com/all']
+    # start_urls = ['https://www.qidian.com/all']
+    redis_key = "qidian:start_url"
     rules = (
         Rule(LinkExtractor(allow=r'.*/all\?.*'), callback='parse_detail', follow=True),
     )
@@ -33,8 +35,3 @@ class QidianSpider(CrawlSpider):
             yield item
 
         print(unquote(response.url))
-        # next_url = response.xpath('//ul[@class="lbf-pagination-item-list"]/li[last()]/a/@href').get()
-        # if not next_url:
-        #     return
-        # else:
-        #     yield scrapy.Request(urljoin(response.url, next_url), callback=self.parse)
