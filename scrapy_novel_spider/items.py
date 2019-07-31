@@ -24,3 +24,4 @@ class QidianItem(Item):
     chan_name = Field()
     sub_name = Field()
     synoptic = Field()
+    origin_url = Field()
