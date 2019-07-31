@@ -12,7 +12,7 @@ class QidianSpider(RedisCrawlSpider):
     name = 'qidian'
     allowed_domains = ['qidian.com']
     # start_urls = ['https://www.qidian.com/all']
-    redis_key = "qidian:start_url"
+    redis_key = "qd:start_url"
     rules = (
         Rule(LinkExtractor(allow=r'.*/all\?.*'), callback='parse_detail', follow=True),
     )
@@ -34,4 +34,4 @@ class QidianSpider(RedisCrawlSpider):
                               chan_name=chan_name, sub_name=sub_name, synoptic=synoptic,origin_url=origin_url)
             yield item
 
-        print(unquote(response.url))
+        # print(unquote(response.url))
