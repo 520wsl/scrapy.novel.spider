@@ -14,7 +14,9 @@ class ScrapyNovelSpiderItem(Item):
     pass
 
 
-class QidianItem(Item):
+class BookItem(Item):
+    # bookInfo
+    id = Field()
     book_id = Field()
     src = Field()
     title = Field()
@@ -25,3 +27,21 @@ class QidianItem(Item):
     sub_name = Field()
     synoptic = Field()
     origin_url = Field()
+    gender = Field()
+    platform = Field()
+    platform_src = Field()
+
+
+class CatalogItem(Item):
+    # catalogInfo
+    id = Field()
+    catalog_id = Field()
+    title = Field()
+    src = Field()
+    book_id = Field()
+    boot_title = Field()
+    cnt = Field()
+    uuid = Field()
+    vs = Field()
+    vn = Field()
+    update_time = Field()
