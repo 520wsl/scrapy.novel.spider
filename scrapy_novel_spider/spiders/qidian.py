@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-from urllib.parse import urljoin, unquote
+from urllib.parse import urljoin, unquote,urlparse
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule, CrawlSpider
 import scrapy
@@ -11,10 +11,12 @@ from scrapy_redis.spiders import RedisCrawlSpider
 class QidianSpider(CrawlSpider):
     name = 'qidian'
     allowed_domains = ['qidian.com']
-    start_urls = ['https://www.qidian.com/all']
+    start_urls = ['https://www.qidian.com/all_pub?chanId=13100&orderId=&page=1&style=1&pageSize=20&siteid=1&pubflag=1&hiddenField=0']
     # redis_key = "qd:start_url"
     rules = (
-        Rule(LinkExtractor(allow=r'.*/all\?.*'), callback='parse_detail', follow=True),
+        Rule(LinkExtractor(allow=r'.*/mm/all.*'), callback='parse_detail', follow=False),
+        Rule(LinkExtractor(allow=r'.*/all.*'), callback='parse_detail', follow=False),
+        Rule(LinkExtractor(allow=r'.*/all_pub.*'), callback='parse_detail', follow=True),
     )
     catalog_path = 'https://read.qidian.com/ajax/book/category?_csrfToken=&bookId={0}'
 
@@ -32,7 +34,15 @@ class QidianSpider(CrawlSpider):
             synoptic = book.xpath('./div[@class="book-mid-info"]/p[@class="intro"]/text()').getall()
             synoptic = " ".join(synoptic).strip()
             origin_url = response.url
-            gender = 1
+            urldict = urlparse(response.url)
+            origin_path =urldict.path
+            gender = 0
+            if origin_path == '/all_pub':
+                gender = 3
+            if origin_path == '/mm/all':
+                gender = 2
+            if origin_path == '/all':
+                gender = 1
             platform = '起点中文网'
             platform_src = 'https://www.qidian.com'
             item = BookItem(book_id=book_id, src=src, title=title, img_url=img_url, state=state, author=author,
