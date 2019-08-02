@@ -8,12 +8,6 @@
 from scrapy.item import Item, Field
 
 
-class ScrapyNovelSpiderItem(Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
-
-
 class BookItem(Item):
     # bookInfo
     id = Field()
@@ -39,7 +33,7 @@ class CatalogItem(Item):
     title = Field()
     src = Field()
     book_id = Field()
-    boot_title = Field()
+    book_title = Field()
     cnt = Field()
     uuid = Field()
     vs = Field()
@@ -48,3 +42,4 @@ class CatalogItem(Item):
     platform = Field()
     platform_src = Field()
     article = Field()
+    item_book = Field()

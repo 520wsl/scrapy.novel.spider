@@ -41,14 +41,12 @@ class QidianSpider(CrawlSpider):
             yield item
             path = self.catalog_path.format(int(book_id))
             yield scrapy.Request(url=path, meta={'item_book': item}, callback=self.catalog_item)
-        # 1005270663
 
     def catalog_item(self, response):
         item_book = response.meta['item_book']
         # print(item_book)
-        print('catalog_item------------------------------------------------------------')
         book_id = item_book['book_id']
-        boot_title = item_book['title']
+        book_title = item_book['title']
         platform = item_book['platform']
         platform_src = item_book['platform_src']
         uuid = 1
@@ -73,17 +71,18 @@ class QidianSpider(CrawlSpider):
                     cN = str(uuid) + '_' + cs['cN']
                     cnt = cs['cnt']
                     update_time = cs['uT']
-                    catalog = dict(catalog_id=id, title=cN, src=cU, book_id=book_id, boot_title=boot_title, cnt=cnt,
+                    catalog = dict(catalog_id=id, title=cN, src=cU, book_id=book_id, book_title=book_title, cnt=cnt,
                                    uuid=uuid, vs=vip, vn=vn, update_time=update_time, platform=platform,
                                    platform_src=platform_src)
                     uuid += 1
-                    yield scrapy.Request(url=catalog['src'], meta=catalog, callback=self.catalog_txt)
+                    yield scrapy.Request(url=catalog['src'], meta={'catalog':catalog,'item_book':item_book}, callback=self.catalog_txt)
 
     def catalog_txt(self, response):
         content = response.xpath('//div[contains(@class,"read-content")]/p/text()').getall()
         content = "\n".join(content)
-        catalog = response.meta
+        catalog = response.meta['catalog']
+        item_book = response.meta['item_book']
         yield CatalogItem(catalog_id=catalog['catalog_id'], title=catalog['title'], src=catalog['src'],
-                          book_id=catalog['book_id'], boot_title=catalog['boot_title'], cnt=catalog['cnt'],
+                          book_id=catalog['book_id'], book_title=catalog['book_title'], cnt=catalog['cnt'],
                           uuid=catalog['uuid'], vs=catalog['vs'], vn=catalog['vn'], update_time=catalog['update_time'],
-                          platform=catalog['platform'], platform_src=catalog['platform_src'], article=content)
+                          platform=catalog['platform'], platform_src=catalog['platform_src'], article=content,item_book=item_book)
