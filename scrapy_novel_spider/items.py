@@ -45,3 +45,6 @@ class CatalogItem(Item):
     vs = Field()
     vn = Field()
     update_time = Field()
+    platform = Field()
+    platform_src = Field()
+    article = Field()

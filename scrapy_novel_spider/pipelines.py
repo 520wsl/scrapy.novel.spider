@@ -41,17 +41,15 @@ class ScrapyNovelSpiderTwistedPipeline(object):
         return cls(dbpool=dbpool)
 
     def process_item(self, item, spider):
-        # if isinstance(item,BookItem):
-        print(item)
-        #     print('书籍==========')
-        # elif isinstance(item,CatalogItem):
-        #     print(item)
-        #     print('目录==========')
+        if isinstance(item, BookItem):
+            print('书籍==========')
+            result = self.dbpool.runQuery(self.get_book_ids(item))
+            result.addCallback(self.insert_book_item, item, spider)
+        elif isinstance(item, CatalogItem):
+            print(item)
+            print('目录==========')
 
         return item
-
-    # result = self.dbpool.runQuery(self.get_book_ids(item))
-    # result.addCallback(self.insert_book_item, item, spider)
 
     # 获取数据ids sql
     def get_book_ids(self, item):
@@ -75,6 +73,4 @@ class ScrapyNovelSpiderTwistedPipeline(object):
 
         print(item)
         print('*' * 30)
-
-        result = self.dbpool.runInteraction(self.insert_book_item_cursor, item)
-        # result.addCallback(self.insert_book_item, item, spider)
+        self.dbpool.runInteraction(self.insert_book_item_cursor, item)

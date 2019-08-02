@@ -112,7 +112,7 @@ ITEM_PIPELINES = {
 # REDIS_PORT = '6379'
 
 # MySql 数据库配置
-MYSQL_HOST = 'localhost'  # 主机
+MYSQL_HOST = '172.30.34.155'  # 主机
 MYSQL_DBNAME = 'scrapy_novel_spider'  # 数据库名称
 MYSQL_USER = 'root'  # 用户名
-MYSQL_PASSWORD = '0'  # 密码
+MYSQL_PASSWORD = '123456'  # 密码
