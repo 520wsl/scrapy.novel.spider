@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-from urllib.parse import urljoin, unquote,urlparse
+from urllib.parse import urljoin, unquote, urlparse
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule, CrawlSpider
 import scrapy
@@ -8,11 +8,11 @@ from scrapy_novel_spider.items import BookItem, CatalogItem
 from scrapy_redis.spiders import RedisCrawlSpider
 
 
-class QidianSpider(CrawlSpider):
+class QidianSpider(RedisCrawlSpider):
     name = 'qidian'
     allowed_domains = ['qidian.com']
-    start_urls = ['https://www.qidian.com/all_pub?chanId=13100&orderId=&page=1&style=1&pageSize=20&siteid=1&pubflag=1&hiddenField=0']
-    # redis_key = "qd:start_url"
+    # start_urls = ['https://www.qidian.com/all_pub?chanId=13100&orderId=&page=1&style=1&pageSize=20&siteid=1&pubflag=1&hiddenField=0']
+    redis_key = "start_url"
     rules = (
         Rule(LinkExtractor(allow=r'.*/mm/all.*'), callback='parse_detail', follow=False),
         Rule(LinkExtractor(allow=r'.*/all.*'), callback='parse_detail', follow=False),
@@ -35,7 +35,7 @@ class QidianSpider(CrawlSpider):
             synoptic = " ".join(synoptic).strip()
             origin_url = response.url
             urldict = urlparse(response.url)
-            origin_path =urldict.path
+            origin_path = urldict.path
             gender = 0
             if origin_path == '/all_pub':
                 gender = 3
@@ -85,7 +85,8 @@ class QidianSpider(CrawlSpider):
                                    uuid=uuid, vs=vip, vn=vn, update_time=update_time, platform=platform,
                                    platform_src=platform_src)
                     uuid += 1
-                    yield scrapy.Request(url=catalog['src'], meta={'catalog':catalog,'item_book':item_book}, callback=self.catalog_txt)
+                    yield scrapy.Request(url=catalog['src'], meta={'catalog': catalog, 'item_book': item_book},
+                                         callback=self.catalog_txt)
 
     def catalog_txt(self, response):
         content = response.xpath('//div[contains(@class,"read-content")]/p/text()').getall()
@@ -95,4 +96,5 @@ class QidianSpider(CrawlSpider):
         yield CatalogItem(catalog_id=catalog['catalog_id'], title=catalog['title'], src=catalog['src'],
                           book_id=catalog['book_id'], book_title=catalog['book_title'], cnt=catalog['cnt'],
                           uuid=catalog['uuid'], vs=catalog['vs'], vn=catalog['vn'], update_time=catalog['update_time'],
-                          platform=catalog['platform'], platform_src=catalog['platform_src'], article=content,item_book=item_book)
+                          platform=catalog['platform'], platform_src=catalog['platform_src'], article=content,
+                          item_book=item_book)
