@@ -14,8 +14,8 @@ class QidianSpider(RedisCrawlSpider):
     # start_urls = ['https://www.qidian.com/all_pub?chanId=13100&orderId=&page=1&style=1&pageSize=20&siteid=1&pubflag=1&hiddenField=0']
     redis_key = "start_url"
     rules = (
-        Rule(LinkExtractor(allow=r'.*/mm/all.*'), callback='parse_detail', follow=False),
-        Rule(LinkExtractor(allow=r'.*/all.*'), callback='parse_detail', follow=False),
+        Rule(LinkExtractor(allow=r'.*/mm/all.*'), callback='parse_detail', follow=True),
+        Rule(LinkExtractor(allow=r'.*/all.*'), callback='parse_detail', follow=True),
         Rule(LinkExtractor(allow=r'.*/all_pub.*'), callback='parse_detail', follow=True),
     )
     catalog_path = 'https://read.qidian.com/ajax/book/category?_csrfToken=&bookId={0}'
