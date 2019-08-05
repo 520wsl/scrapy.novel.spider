@@ -56,7 +56,7 @@ class QidianSpider(RedisCrawlSpider):
                             gender=gender, platform=platform, platform_src=platform_src)
             yield item
             path = self.catalog_path.format(int(book_id))
-            # yield scrapy.Request(url=path, meta={'item_book': item}, callback=self.catalog_item)
+            yield scrapy.Request(url=path, meta={'item_book': item}, callback=self.catalog_item)
 
     def catalog_item(self, response):
         item_book = response.meta['item_book']

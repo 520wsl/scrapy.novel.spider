@@ -110,10 +110,11 @@ SCHEDULER_PERSIST = True
 REDIS_HOST = '172.30.34.155'
 # REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
+REDIS_DB = '0'
 
 # MySql 数据库配置
 MYSQL_HOST = '172.30.34.155'  # 主机
-# MYSQL_DBNAME = 'scrapy_novel_spider'  # 数据库名称
-MYSQL_DBNAME = 'scrapy_novel_spider_test'  # 数据库名称
+MYSQL_DBNAME = 'scrapy_novel_spider'  # 数据库名称
+# MYSQL_DBNAME = 'scrapy_novel_spider_test'  # 数据库名称
 MYSQL_USER = 'root'  # 用户名
 MYSQL_PASSWORD = '123456'  # 密码

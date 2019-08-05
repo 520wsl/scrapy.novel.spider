@@ -7,6 +7,8 @@
 
 from scrapy.item import Item, Field
 
+class BookUrlItem(Item):
+    srcs = Field()
 
 class BookItem(Item):
     # bookInfo
