@@ -1,3 +1,9 @@
+# 说明：
+#     此爬虫是一次性爬取整个起点中文网所有书籍
+# 存在问题：
+#     1、书籍数据存储重复
+#     2、存储顺序不可控
+#     3、书籍重复抓取
 # -*- coding: utf-8 -*-
 import json
 from urllib.parse import urljoin, unquote, urlparse
@@ -50,7 +56,7 @@ class QidianSpider(RedisCrawlSpider):
                             gender=gender, platform=platform, platform_src=platform_src)
             yield item
             path = self.catalog_path.format(int(book_id))
-            yield scrapy.Request(url=path, meta={'item_book': item}, callback=self.catalog_item)
+            # yield scrapy.Request(url=path, meta={'item_book': item}, callback=self.catalog_item)
 
     def catalog_item(self, response):
         item_book = response.meta['item_book']
