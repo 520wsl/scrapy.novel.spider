@@ -29,6 +29,8 @@ class ItemQidianBookSpider(RedisSpider):
         red = book_info.xpath('//p[@class="tag"]/a/text()').getall()
         state = blue[0]
         author = book_info.xpath('//h1/span/a/text()').get()
+        if not author:
+            author = book_info.xpath('//h1/span/text()').get()
         chan_name = red[0]
         sub_name = red[1]
         synoptic = response.xpath('//div[@class="book-content-wrap cf"]//div[@class="book-intro"]//p/text()').getall()
