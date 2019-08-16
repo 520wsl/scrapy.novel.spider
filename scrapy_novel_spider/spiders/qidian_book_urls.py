@@ -5,13 +5,11 @@
 #     2、存储顺序不可控
 #     3、书籍重复抓取
 # -*- coding: utf-8 -*-
-import json
-from urllib.parse import urljoin, unquote, urlparse
 from scrapy.linkextractors import LinkExtractor
-from scrapy.spiders import Rule, CrawlSpider
-import scrapy
-from scrapy_novel_spider.items import BookItem, CatalogItem, BookUrlItem
+from scrapy.spiders import Rule
 from scrapy_redis.spiders import RedisCrawlSpider
+
+from scrapy_novel_spider.items import BookUrlItem
 
 
 class QidianSpider(RedisCrawlSpider):
